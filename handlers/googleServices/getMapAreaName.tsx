@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default async (req: Request, res: Response) => {
+  console.log(req)
   const latitude: string = String(req.query.latitude)
   const longitude: string = String(req.query.longitude)
   const place = await fetch(
@@ -14,6 +15,6 @@ export default async (req: Request, res: Response) => {
       9
     )},${longitude.slice(0, 9)}&key=${process.env.GOOGLE_API_KEY}`
   ).then(place => place.json())
-  console.log(place.results[0].address_components)
-  res.status(200).json(place.results[0].address_components)
+  console.log(place)
+  res.status(200).json(place)
 }
