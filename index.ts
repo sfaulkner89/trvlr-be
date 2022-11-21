@@ -5,4 +5,4 @@ const app = express()
 app.use(express.json())
 app.use(router)
 
-app.listen(8080, () => console.log('listenin'))
+app.listen(process.env.PORT || 8080, () => console.log('listenin'))
