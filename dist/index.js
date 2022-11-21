@@ -8,5 +8,5 @@ const index_1 = __importDefault(require("./routes/index"));
 const app = express();
 app.use(express.json());
 app.use(index_1.default);
-app.listen(8080, () => console.log('listenin'));
+app.listen(process.env.PORT || 8080, () => console.log('listenin'));
 //# sourceMappingURL=index.js.map
