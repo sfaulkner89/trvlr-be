@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { LatLng } from 'react-native-maps'
 import fetch from 'node-fetch'
 import dotenv from 'dotenv'
 
