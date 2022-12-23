@@ -66,7 +66,10 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}/?retryWrites=true&w=majority`;
     console.log(url);
     mongoose_1.default.connect(url);
-    yield new Promise(resolve => httpServer.listen({ port: process.env.PORT || 2000 }, (res) => resolve(res)));
+    yield new Promise(resolve => {
+        const listener = httpServer.listen({ port: process.env.DEV_PORT || 2000 }, (res) => resolve(res));
+        console.log(listener.address());
+    });
     console.log(`get poppin' at ${server.graphqlPath}`);
 });
 startServer();

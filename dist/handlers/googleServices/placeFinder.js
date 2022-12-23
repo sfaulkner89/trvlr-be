@@ -13,14 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fetch_1 = __importDefault(require("node-fetch"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const latitude = String(req.query.latitude);
-    const longitude = String(req.query.longitude);
-    const place = yield (0, node_fetch_1.default)(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude.slice(0, 9)},${longitude.slice(0, 9)}&key=${process.env.GOOGLE_API_KEY}`)
-        .then(place => place.json())
-        .catch(err => console.error(err));
-    res.status(200).json(place.results[0].address_components);
+    const search = req.query.search;
+    const location = `${req.query.latitude}%2C${req.query.longitude}`;
+    const radius = typeof req.query.radius === 'string'
+        ? parseFloat(req.query.radius) * 10
+        : 500;
+    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${search}&key=${process.env.GOOGLE_API_KEY}&location=${location}&radius=${radius}`;
+    const results = yield (yield (0, node_fetch_1.default)(url)).json();
+    const resultsShim = results.predictions.map(pred => {
+        return {
+            description: pred.description,
+            placeId: pred.place_id,
+            names: pred.structured_formatting
+        };
+    });
+    res.status(200).json(resultsShim);
 });
-//# sourceMappingURL=getMapAreaName.js.map
+//# sourceMappingURL=placeFinder.js.map
