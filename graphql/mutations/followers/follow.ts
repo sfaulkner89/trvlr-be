@@ -18,7 +18,6 @@ export const follow = {
   resolve: async (_parent: undefined, args: FollowDetails) => {
     const currentUser = await User.findOne({ id: args.userId })
     const followUser = await User.findOne({ id: args.followId })
-    console.log(followUser)
     if (!currentUser.following.includes(args.followId)) {
       currentUser.following.push(args.followId)
     }

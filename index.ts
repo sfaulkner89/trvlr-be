@@ -9,8 +9,8 @@ import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageLocalDefault
 } from 'apollo-server-core'
-import mongoose from 'mongoose'
-import { createUser, follow, unfollow } from './graphql/mutations'
+import mongoose, { RootQuerySelector } from 'mongoose'
+import * as mutations from './graphql/mutations'
 import { getUser } from './graphql/queries'
 
 const RootQueryType = new GraphQLObjectType({
@@ -24,11 +24,7 @@ const RootQueryType = new GraphQLObjectType({
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
-  fields: () => ({
-    createUser,
-    follow,
-    unfollow
-  })
+  fields: () => mutations
 })
 
 const schema = new GraphQLSchema({
@@ -60,14 +56,12 @@ const startServer = async () => {
   await server.start()
   server.applyMiddleware({ app })
   const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}/?retryWrites=true&w=majority`
-  console.log(url)
   mongoose.connect(url)
   await new Promise(resolve => {
     const listener = httpServer.listen(
       { port: process.env.DEV_PORT || 2000 },
       (res: void) => resolve(res)
     )
-    console.log(listener.address())
   })
   console.log(`get poppin' at ${server.graphqlPath}`)
 }

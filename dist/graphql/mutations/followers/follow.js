@@ -23,7 +23,6 @@ exports.follow = {
     resolve: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         const currentUser = yield User_1.User.findOne({ id: args.userId });
         const followUser = yield User_1.User.findOne({ id: args.followId });
-        console.log(followUser);
         if (!currentUser.following.includes(args.followId)) {
             currentUser.following.push(args.followId);
         }

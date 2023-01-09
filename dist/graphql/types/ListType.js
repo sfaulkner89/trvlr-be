@@ -2,15 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListType = void 0;
 const graphql_1 = require("graphql");
+const LatLngGQL_1 = require("../../types/gqlOutputTypes/LatLngGQL");
 const User_1 = require("../schema/User");
 const UserType_1 = require("./UserType");
-const LatLng = new graphql_1.GraphQLObjectType({
-    name: 'LatLng',
-    fields: () => ({
-        longitude: { type: graphql_1.GraphQLInt },
-        latitude: { type: graphql_1.GraphQLInt }
-    })
-});
 exports.ListType = new graphql_1.GraphQLObjectType({
     name: 'List',
     description: 'A list',
@@ -18,7 +12,7 @@ exports.ListType = new graphql_1.GraphQLObjectType({
         id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         displayName: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         photoLocation: { type: graphql_1.GraphQLString },
-        location: { type: LatLng },
+        location: { type: LatLngGQL_1.LatLngGQL },
         city: { type: graphql_1.GraphQLString },
         country: { type: graphql_1.GraphQLString },
         dateCreated: { type: graphql_1.GraphQLString },
