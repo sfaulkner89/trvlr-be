@@ -20,6 +20,8 @@ export type PlaceInitialization = {
   dateModified: string
   rating?: PlaceRating
   comment?: PlaceComment
+  types?: string[]
+  price?: number
 }
 
 export const initializePlace = async (
@@ -42,7 +44,9 @@ export const initializePlace = async (
     dateCreated: new Date(),
     dateModified: new Date(),
     ratings: args.rating ? [args.rating] : [],
-    comments: args.comment ? [args.comment] : []
+    comments: args.comment ? [args.comment] : [],
+    types: args.types ? args.types : [],
+    price: args.price
   })
   await place.save()
   return place

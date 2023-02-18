@@ -11,13 +11,14 @@ import {
 } from 'apollo-server-core'
 import mongoose, { RootQuerySelector } from 'mongoose'
 import * as mutations from './graphql/mutations'
-import { getUser } from './graphql/queries'
+import { getUser, checkDuplicatePlace } from './graphql/queries'
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    getUser
+    getUser,
+    checkDuplicatePlace
   })
 })
 
@@ -63,7 +64,13 @@ const startServer = async () => {
       (res: void) => resolve(res)
     )
   })
-  console.log(`get poppin' at ${server.graphqlPath}`)
+  console.log(
+    `get poppin' at ${
+      process.env.NODE_ENV === 'production'
+        ? process.env.PORT
+        : process.env.DEV_PORT
+    } ${server.graphqlPath}`
+  )
 }
 
 startServer()

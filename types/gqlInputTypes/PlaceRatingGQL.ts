@@ -1,4 +1,5 @@
 import {
+  GraphQLFloat,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLNonNull,
@@ -13,6 +14,6 @@ export const PlaceRatingGQL: GraphQLInputObjectType =
       id: { type: new GraphQLNonNull(GraphQLString) },
       userId: { type: new GraphQLNonNull(GraphQLString) },
       dateCreated: { type: new GraphQLNonNull(GraphQLString) },
-      stars: { type: new GraphQLNonNull(GraphQLString) }
+      stars: { type: GraphQLFloat }
     })
   })

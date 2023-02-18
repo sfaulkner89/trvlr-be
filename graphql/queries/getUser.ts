@@ -8,6 +8,8 @@ export const getUser = {
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) }
   },
-  resolve: (_parents: undefined, args: { id: string }) =>
-    User.findOne({ id: args.id })
+  resolve: (_parents: undefined, args: { id: string }) => {
+    console.log('here')
+    return User.findOne({ id: args.id })
+  }
 }

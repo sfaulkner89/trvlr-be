@@ -34,7 +34,7 @@ export const createUser = {
       profileLocation: args.profileLocation,
       followers: [],
       following: [],
-      lists: [],
+      listIds: [],
       countries: [],
       groups: []
     })

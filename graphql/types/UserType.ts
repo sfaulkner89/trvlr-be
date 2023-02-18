@@ -4,8 +4,10 @@ import {
   GraphQLObjectType,
   GraphQLString
 } from 'graphql'
+import { List } from '../../graphql/schema/List'
 import { User } from '../schema/User'
 import { GroupType } from './GroupType'
+import { ListType } from './ListType'
 
 export const UserType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
@@ -21,7 +23,15 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     followers: { type: new GraphQLList(GraphQLString) },
     following: { type: new GraphQLList(GraphQLString) },
     countries: { type: new GraphQLList(GraphQLString) },
-    lists: { type: new GraphQLList(GraphQLString) },
+    listIds: { type: new GraphQLList(GraphQLString) },
+    lists: {
+      type: new GraphQLList(ListType),
+      resolve: async currentUser => {
+        return currentUser.listIds.map(
+          async (listId: string) => await List.findOne({ id: listId })
+        )
+      }
+    },
     groups: { type: new GraphQLList(GroupType) },
     followerUsers: {
       type: new GraphQLList(UserType),

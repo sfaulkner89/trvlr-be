@@ -16,16 +16,16 @@ const uuid_1 = require("uuid");
 const ListType_1 = require("../../../graphql/types/ListType");
 const LatLngGQL_1 = require("../../../types/gqlInputTypes/LatLngGQL");
 const createPlace_1 = require("../places/createPlace");
-const PlaceCommentGQL_1 = require("../../../types/gqlInputTypes/PlaceCommentGQL");
-const PlaceRatingGQL_1 = require("../../../types/gqlInputTypes/PlaceRatingGQL");
+const User_1 = require("../../../graphql/schema/User");
 exports.placeArgs = {
     name: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
     googlePlaceId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
     location: { type: new graphql_1.GraphQLNonNull(LatLngGQL_1.LatLngGQL) },
     city: { type: graphql_1.GraphQLString },
     country: { type: graphql_1.GraphQLString },
-    rating: { type: new graphql_1.GraphQLList(PlaceRatingGQL_1.PlaceRatingGQL) },
-    comment: { type: new graphql_1.GraphQLList(PlaceCommentGQL_1.PlaceCommentGQL) }
+    rating: { type: graphql_1.GraphQLFloat },
+    comment: { type: graphql_1.GraphQLString },
+    types: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
 };
 exports.createList = {
     type: ListType_1.ListType,
@@ -43,23 +43,42 @@ exports.createList = {
         }
     },
     resolve: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('got here');
         let initializedPlace;
+        console.log(args.initialPlace);
         if (args.initialPlace) {
             initializedPlace = yield (0, createPlace_1.initializePlace)(_parent, args.initialPlace);
         }
+        const listId = (0, uuid_1.v4)();
         const list = new List_1.List({
-            id: (0, uuid_1.v4)(),
+            id: listId,
             userId: args.userId,
             displayName: args.displayName,
             location: args.location,
             city: args.city,
             country: args.country,
-            dateCreated: new Date(),
-            dateModified: new Date(),
+            dateCreated: new Date().toDateString(),
+            dateModified: new Date().toDateString(),
             placeIds: initializedPlace ? [initializedPlace.id] : [],
-            followers: [args.userId]
+            followers: [args.userId],
+            ratings: [
+                {
+                    id: (0, uuid_1.v4)(),
+                    userId: args.userId,
+                    dateCreated: new Date(),
+                    stars: args.initialPlace ? args.initialPlace.rating : null
+                }
+            ],
+            comments: {
+                id: (0, uuid_1.v4)(),
+                userId: args.userId,
+                dateCreated: new Date().toDateString(),
+                likes: 0,
+                text: args.initialPlace ? args.initialPlace.comment : null
+            }
         });
+        const listMaker = yield User_1.User.findOne({ id: args.userId });
+        listMaker.listIds.push(listId);
+        yield listMaker.save();
         yield list.save();
         return list;
     })

@@ -21,6 +21,7 @@ export const PlaceType: GraphQLObjectType = new GraphQLObjectType({
     dateCreated: { type: new GraphQLNonNull(GraphQLString) },
     dateModified: { type: new GraphQLNonNull(GraphQLString) },
     ratings: { type: new GraphQLList(PlaceRatingGQL) },
-    comments: { type: new GraphQLList(PlaceCommentGQL) }
+    comments: { type: new GraphQLList(PlaceCommentGQL) },
+    types: { type: new GraphQLList(GraphQLString) }
   })
 })

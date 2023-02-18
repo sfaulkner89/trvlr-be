@@ -50,7 +50,8 @@ const RootQueryType = new graphql_1.GraphQLObjectType({
     name: 'Query',
     description: 'Root Query',
     fields: () => ({
-        getUser: queries_1.getUser
+        getUser: queries_1.getUser,
+        checkDuplicatePlace: queries_1.checkDuplicatePlace
     })
 });
 const RootMutationType = new graphql_1.GraphQLObjectType({
@@ -87,7 +88,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     yield new Promise(resolve => {
         const listener = httpServer.listen({ port: process.env.DEV_PORT || 2000 }, (res) => resolve(res));
     });
-    console.log(`get poppin' at ${server.graphqlPath}`);
+    console.log(`get poppin' at ${process.env.DEV_PORT} ${server.graphqlPath}`);
 });
 startServer();
 //# sourceMappingURL=index.js.map

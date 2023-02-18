@@ -14,6 +14,6 @@ export const PlaceCommentGQL: GraphQLInputObjectType =
       userId: { type: new GraphQLNonNull(GraphQLString) },
       dateCreated: { type: new GraphQLNonNull(GraphQLString) },
       likes: { type: new GraphQLNonNull(GraphQLInt) },
-      text: { type: new GraphQLNonNull(GraphQLString) }
+      text: { type: GraphQLString }
     }
   })

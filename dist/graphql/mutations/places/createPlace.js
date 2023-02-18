@@ -31,7 +31,9 @@ const initializePlace = (_parent, args) => __awaiter(void 0, void 0, void 0, fun
         dateCreated: new Date(),
         dateModified: new Date(),
         ratings: args.rating ? [args.rating] : [],
-        comments: args.comment ? [args.comment] : []
+        comments: args.comment ? [args.comment] : [],
+        types: args.types ? args.types : [],
+        price: args.price
     });
     yield place.save();
     return place;

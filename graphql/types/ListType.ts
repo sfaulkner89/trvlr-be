@@ -1,12 +1,15 @@
 import {
+  GraphQLBoolean,
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
 } from 'graphql'
+import { Place } from '../../graphql/schema/Place'
 import { LatLngGQL } from '../../types/gqlOutputTypes/LatLngGQL'
 import { User } from '../schema/User'
+import { PlaceType } from './PlaceType'
 import { UserType } from './UserType'
 
 export const ListType: GraphQLObjectType = new GraphQLObjectType({
@@ -22,6 +25,13 @@ export const ListType: GraphQLObjectType = new GraphQLObjectType({
     dateCreated: { type: GraphQLString },
     dateModified: { type: GraphQLString },
     placeIds: { type: new GraphQLList(GraphQLString) },
+    places: {
+      type: new GraphQLList(PlaceType),
+      resolve: userList =>
+        userList.placeIds.map((placeId: string) => {
+          return Place.findOne({ id: placeId })
+        })
+    },
     followers: { type: new GraphQLList(GraphQLString) },
     followerProfiles: {
       type: new GraphQLList(UserType),
@@ -29,6 +39,7 @@ export const ListType: GraphQLObjectType = new GraphQLObjectType({
         userList.followers.map((follower: string) => {
           return User.findOne({ id: follower })
         })
-    }
+    },
+    duplicatePlace: { type: GraphQLBoolean }
   })
 })

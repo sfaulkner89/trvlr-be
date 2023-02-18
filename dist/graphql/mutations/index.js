@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createList = exports.createPlace = exports.unfollow = exports.follow = exports.createUser = void 0;
+exports.addPlaceToList = exports.createList = exports.createPlace = exports.unfollow = exports.follow = exports.createUser = void 0;
 const createUser_1 = require("./createUser");
 Object.defineProperty(exports, "createUser", { enumerable: true, get: function () { return createUser_1.createUser; } });
 const follow_1 = require("./followers/follow");
@@ -11,4 +11,6 @@ const createList_1 = require("./lists/createList");
 Object.defineProperty(exports, "createList", { enumerable: true, get: function () { return createList_1.createList; } });
 const createPlace_1 = require("./places/createPlace");
 Object.defineProperty(exports, "createPlace", { enumerable: true, get: function () { return createPlace_1.createPlace; } });
+const addPlaceToList_1 = require("./lists/addPlaceToList");
+Object.defineProperty(exports, "addPlaceToList", { enumerable: true, get: function () { return addPlaceToList_1.addPlaceToList; } });
 //# sourceMappingURL=index.js.map

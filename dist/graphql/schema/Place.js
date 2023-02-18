@@ -35,7 +35,9 @@ exports.PlaceSchema = new mongoose_1.Schema({
     dateCreated: Date,
     dateModified: Date,
     ratings: Array,
-    comments: Array
+    comments: Array,
+    price: Number,
+    types: Array
 });
 exports.Place = mongoose_1.default.model('places', exports.PlaceSchema);
 //# sourceMappingURL=Place.js.map

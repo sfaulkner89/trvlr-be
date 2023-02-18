@@ -8,7 +8,7 @@ exports.PlaceRatingGQL = new graphql_1.GraphQLInputObjectType({
         id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         dateCreated: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-        stars: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+        stars: { type: graphql_1.GraphQLFloat }
     })
 });
 //# sourceMappingURL=PlaceRatingGQL.js.map

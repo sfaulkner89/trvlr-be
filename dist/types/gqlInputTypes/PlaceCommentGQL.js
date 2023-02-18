@@ -9,7 +9,7 @@ exports.PlaceCommentGQL = new graphql_1.GraphQLInputObjectType({
         userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         dateCreated: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         likes: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLInt) },
-        text: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+        text: { type: graphql_1.GraphQLString }
     }
 });
 //# sourceMappingURL=PlaceCommentGQL.js.map

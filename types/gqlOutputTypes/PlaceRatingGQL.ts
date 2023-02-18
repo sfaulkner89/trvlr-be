@@ -12,6 +12,6 @@ export const PlaceRatingGQL: GraphQLObjectType = new GraphQLObjectType({
     id: { type: new GraphQLNonNull(GraphQLString) },
     userId: { type: new GraphQLNonNull(GraphQLString) },
     dateCreated: { type: new GraphQLNonNull(GraphQLString) },
-    stars: { type: new GraphQLNonNull(GraphQLString) }
+    stars: { type: GraphQLString }
   })
 })

@@ -10,7 +10,9 @@ export const PlaceSchema = new Schema({
   dateCreated: Date!,
   dateModified: Date!,
   ratings: Array,
-  comments: Array
+  comments: Array,
+  price: Number,
+  types: Array
 })
 
 export const Place = mongoose.model('places', PlaceSchema)

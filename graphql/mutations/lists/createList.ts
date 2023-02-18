@@ -1,4 +1,5 @@
 import {
+  GraphQLFloat,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLList,
@@ -13,6 +14,7 @@ import { LatLngGQL } from '../../../types/gqlInputTypes/LatLngGQL'
 import { initializePlace, PlaceInitialization } from '../places/createPlace'
 import { PlaceCommentGQL } from '../../../types/gqlInputTypes/PlaceCommentGQL'
 import { PlaceRatingGQL } from '../../../types/gqlInputTypes/PlaceRatingGQL'
+import { User } from '../../../graphql/schema/User'
 
 type ListInitialization = {
   userId: string
@@ -29,8 +31,9 @@ export const placeArgs = {
   location: { type: new GraphQLNonNull(LatLngGQL) },
   city: { type: GraphQLString },
   country: { type: GraphQLString },
-  rating: { type: new GraphQLList(PlaceRatingGQL) },
-  comment: { type: new GraphQLList(PlaceCommentGQL) }
+  rating: { type: GraphQLFloat },
+  comment: { type: GraphQLString },
+  types: { type: new GraphQLList(GraphQLString) }
 }
 
 export const createList = {
@@ -49,23 +52,43 @@ export const createList = {
     }
   },
   resolve: async (_parent: undefined, args: ListInitialization) => {
-    console.log('got here')
     let initializedPlace
+    console.log(args.initialPlace)
     if (args.initialPlace) {
       initializedPlace = await initializePlace(_parent, args.initialPlace)
     }
+    const listId = v4()
     const list = new List({
-      id: v4(),
+      id: listId,
       userId: args.userId,
       displayName: args.displayName,
       location: args.location,
       city: args.city,
       country: args.country,
-      dateCreated: new Date(),
-      dateModified: new Date(),
+      dateCreated: new Date().toDateString(),
+      dateModified: new Date().toDateString(),
       placeIds: initializedPlace ? [initializedPlace.id] : [],
-      followers: [args.userId]
+      followers: [args.userId],
+      ratings: [
+        {
+          id: v4(),
+          userId: args.userId,
+          dateCreated: new Date(),
+          stars: args.initialPlace ? args.initialPlace.rating : null
+        }
+      ],
+      comments: {
+        id: v4(),
+        userId: args.userId,
+        dateCreated: new Date().toDateString(),
+        likes: 0,
+        text: args.initialPlace ? args.initialPlace.comment : null
+      }
     })
+    const listMaker = await User.findOne({ id: args.userId })
+    listMaker.listIds.push(listId)
+
+    await listMaker.save()
     await list.save()
     return list
   }

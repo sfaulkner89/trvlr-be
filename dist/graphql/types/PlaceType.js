@@ -18,7 +18,8 @@ exports.PlaceType = new graphql_1.GraphQLObjectType({
         dateCreated: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         dateModified: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         ratings: { type: new graphql_1.GraphQLList(PlaceRatingGQL_1.PlaceRatingGQL) },
-        comments: { type: new graphql_1.GraphQLList(PlaceCommentGQL_1.PlaceCommentGQL) }
+        comments: { type: new graphql_1.GraphQLList(PlaceCommentGQL_1.PlaceCommentGQL) },
+        types: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
     })
 });
 //# sourceMappingURL=PlaceType.js.map
