@@ -24,7 +24,6 @@ export const createUser = {
     profileLocation: { type: GraphQLString }
   },
   resolve: async (_parent: undefined, args: UserInput) => {
-    console.log('made it')
     const user = new User({
       id: v4(),
       email: args.email,
@@ -35,7 +34,7 @@ export const createUser = {
       profileLocation: args.profileLocation,
       followers: [],
       following: [],
-      lists: [],
+      listIds: [],
       countries: [],
       groups: []
     })

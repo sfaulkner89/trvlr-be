@@ -12,7 +12,8 @@ export default async (req: Request, res: Response) => {
       0,
       9
     )},${longitude.slice(0, 9)}&key=${process.env.GOOGLE_API_KEY}`
-  ).then(place => place.json())
-  console.log(place.results[0].address_components)
+  )
+    .then(place => place.json())
+    .catch(err => console.error(err))
   res.status(200).json(place.results[0].address_components)
 }

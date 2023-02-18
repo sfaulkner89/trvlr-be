@@ -11,8 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserType = void 0;
 const graphql_1 = require("graphql");
+const List_1 = require("../../graphql/schema/List");
 const User_1 = require("../schema/User");
 const GroupType_1 = require("./GroupType");
+const ListType_1 = require("./ListType");
 exports.UserType = new graphql_1.GraphQLObjectType({
     name: 'User',
     description: "A single user's data",
@@ -27,7 +29,13 @@ exports.UserType = new graphql_1.GraphQLObjectType({
         followers: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
         following: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
         countries: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
-        lists: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+        listIds: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+        lists: {
+            type: new graphql_1.GraphQLList(ListType_1.ListType),
+            resolve: (currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+                return currentUser.listIds.map((listId) => __awaiter(void 0, void 0, void 0, function* () { return yield List_1.List.findOne({ id: listId }); }));
+            })
+        },
         groups: { type: new graphql_1.GraphQLList(GroupType_1.GroupType) },
         followerUsers: {
             type: new graphql_1.GraphQLList(exports.UserType),

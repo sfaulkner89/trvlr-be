@@ -26,7 +26,6 @@ exports.createUser = {
         profileLocation: { type: graphql_1.GraphQLString }
     },
     resolve: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('made it');
         const user = new User_1.User({
             id: (0, uuid_1.v4)(),
             email: args.email,
@@ -37,7 +36,7 @@ exports.createUser = {
             profileLocation: args.profileLocation,
             followers: [],
             following: [],
-            lists: [],
+            listIds: [],
             countries: [],
             groups: []
         });

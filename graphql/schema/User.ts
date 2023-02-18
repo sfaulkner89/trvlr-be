@@ -12,7 +12,7 @@ export const UserSchema = new Schema({
   followers: Array,
   following: Array,
   countries: Array,
-  lists: Array,
+  listIds: Array,
   groups: Array
 })
 
