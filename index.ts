@@ -60,15 +60,20 @@ const startServer = async () => {
   mongoose.connect(url)
   await new Promise(resolve => {
     const listener = httpServer.listen(
-      { port: process.env.DEV_PORT || 2000 },
+      {
+        port:
+          process.env.NODE_ENV === 'production'
+            ? process.env.PORT || 80
+            : process.env.DEV_PORT || 8080
+      },
       (res: void) => resolve(res)
     )
   })
   console.log(
     `get poppin' at ${
       process.env.NODE_ENV === 'production'
-        ? process.env.PORT
-        : process.env.DEV_PORT
+        ? process.env.PORT || 80
+        : process.env.DEV_PORT || 8080
     } ${server.graphqlPath}`
   )
 }
