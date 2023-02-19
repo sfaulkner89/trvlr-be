@@ -51,7 +51,8 @@ const RootQueryType = new graphql_1.GraphQLObjectType({
     description: 'Root Query',
     fields: () => ({
         getUser: queries_1.getUser,
-        checkDuplicatePlace: queries_1.checkDuplicatePlace
+        checkDuplicatePlace: queries_1.checkDuplicatePlace,
+        userSearch: queries_1.userSearch
     })
 });
 const RootMutationType = new graphql_1.GraphQLObjectType({
@@ -86,9 +87,15 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}/?retryWrites=true&w=majority`;
     mongoose_1.default.connect(url);
     yield new Promise(resolve => {
-        const listener = httpServer.listen({ port: process.env.DEV_PORT || 2000 }, (res) => resolve(res));
+        const listener = httpServer.listen({
+            port: process.env.NODE_ENV === 'production'
+                ? process.env.PORT || 80
+                : process.env.DEV_PORT || 8080
+        }, (res) => resolve(res));
     });
-    console.log(`get poppin' at ${process.env.DEV_PORT} ${server.graphqlPath}`);
+    console.log(`get poppin' at ${process.env.NODE_ENV === 'production'
+        ? process.env.PORT || 80
+        : process.env.DEV_PORT || 8080} ${server.graphqlPath}`);
 });
 startServer();
 //# sourceMappingURL=index.js.map

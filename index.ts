@@ -11,14 +11,15 @@ import {
 } from 'apollo-server-core'
 import mongoose, { RootQuerySelector } from 'mongoose'
 import * as mutations from './graphql/mutations'
-import { getUser, checkDuplicatePlace } from './graphql/queries'
+import { getUser, checkDuplicatePlace, userSearch } from './graphql/queries'
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
     getUser,
-    checkDuplicatePlace
+    checkDuplicatePlace,
+    userSearch
   })
 })
 
