@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserType = void 0;
 const graphql_1 = require("graphql");
 const List_1 = require("../../graphql/schema/List");
+const checkInLocation_1 = require("../../types/gqlOutputTypes/checkInLocation");
 const User_1 = require("../schema/User");
 const GroupType_1 = require("./GroupType");
 const ListType_1 = require("./ListType");
@@ -30,6 +31,7 @@ exports.UserType = new graphql_1.GraphQLObjectType({
         following: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
         countries: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
         listIds: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+        checkInLocation: { type: checkInLocation_1.checkInLocation },
         lists: {
             type: new graphql_1.GraphQLList(ListType_1.ListType),
             resolve: (currentUser) => __awaiter(void 0, void 0, void 0, function* () {

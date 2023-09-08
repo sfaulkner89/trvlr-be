@@ -44,7 +44,6 @@ exports.createList = {
     },
     resolve: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         let initializedPlace;
-        console.log(args.initialPlace);
         if (args.initialPlace) {
             initializedPlace = yield (0, createPlace_1.initializePlace)(_parent, args.initialPlace);
         }

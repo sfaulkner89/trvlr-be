@@ -1,8 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
-import { PlaceCommentGQL } from '../../../types/gqlInputTypes/PlaceCommentGQL'
-import { PlaceRatingGQL } from '../../../types/gqlInputTypes/PlaceRatingGQL'
 import { PlaceType } from '../../../graphql/types/PlaceType'
-import { LatLngGQL } from '../../../types/gqlInputTypes/LatLngGQL'
 import { PlaceComment } from '../../../types/tsTypes/PlaceComment'
 import { PlaceRating } from '../../../types/tsTypes/PlaceRating'
 import { Place } from '../../../graphql/schema/Place'

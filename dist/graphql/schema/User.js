@@ -18,7 +18,18 @@ exports.UserSchema = new Schema({
     following: Array,
     countries: Array,
     listIds: Array,
-    groups: Array
+    groups: Array,
+    checkInLocation: {
+        location: {
+            latitude: Number,
+            longitude: Number
+        },
+        placeId: String,
+        names: {
+            main_text: String,
+            secondary_text: String
+        }
+    }
 });
 exports.User = mongoose_1.default.model('profiles', exports.UserSchema);
 //# sourceMappingURL=User.js.map

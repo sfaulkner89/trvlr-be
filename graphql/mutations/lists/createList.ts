@@ -53,7 +53,6 @@ export const createList = {
   },
   resolve: async (_parent: undefined, args: ListInitialization) => {
     let initializedPlace
-    console.log(args.initialPlace)
     if (args.initialPlace) {
       initializedPlace = await initializePlace(_parent, args.initialPlace)
     }

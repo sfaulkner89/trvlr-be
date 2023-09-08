@@ -11,7 +11,11 @@ export default async (req: Request, res: Response) => {
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${search}&key=${process.env.GOOGLE_API_KEY}&location=${location}&radius=${radius}`
   const results: google.maps.places.AutocompleteResponse = await (
     await fetch(url)
-  ).json()
+  )
+    .json()
+    .catch(err => {
+      console.log(err)
+    })
   const resultsShim = results.predictions.map(pred => {
     return {
       description: pred.description,

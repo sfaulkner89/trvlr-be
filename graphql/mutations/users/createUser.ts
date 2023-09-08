@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
-import { User } from '../schema/User'
-import { UserType } from '../types/UserType'
+import { User } from '../../schema/User'
+import { UserType } from '../../types/UserType'
 import { v4 } from 'uuid'
 
 type UserInput = {

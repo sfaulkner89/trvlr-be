@@ -29,9 +29,18 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => mutations
 })
 
+// const RootSubscriptionType = new GraphQLObjectType({
+//   name: 'Subscription',
+// description: 'Root Subscription',
+// fields: () => {
+//   return
+// }
+// })
+
 const schema = new GraphQLSchema({
   query: RootQueryType,
   mutation: RootMutationType
+  // subscription: RootSubscriptionType
 })
 
 const startServer = async () => {

@@ -11,7 +11,6 @@ exports.getUser = {
         id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
     },
     resolve: (_parents, args) => {
-        console.log('here');
         return User_1.User.findOne({ id: args.id });
     }
 };

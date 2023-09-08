@@ -60,9 +60,17 @@ const RootMutationType = new graphql_1.GraphQLObjectType({
     description: 'Root Mutation',
     fields: () => mutations
 });
+// const RootSubscriptionType = new GraphQLObjectType({
+//   name: 'Subscription',
+// description: 'Root Subscription',
+// fields: () => {
+//   return
+// }
+// })
 const schema = new graphql_1.GraphQLSchema({
     query: RootQueryType,
     mutation: RootMutationType
+    // subscription: RootSubscriptionType
 });
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();

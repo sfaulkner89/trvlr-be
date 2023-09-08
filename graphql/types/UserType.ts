@@ -5,6 +5,7 @@ import {
   GraphQLString
 } from 'graphql'
 import { List } from '../../graphql/schema/List'
+import { checkInLocation } from '../../types/gqlOutputTypes/checkInLocation'
 import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'
@@ -24,6 +25,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     following: { type: new GraphQLList(GraphQLString) },
     countries: { type: new GraphQLList(GraphQLString) },
     listIds: { type: new GraphQLList(GraphQLString) },
+    checkInLocation: { type: checkInLocation },
     lists: {
       type: new GraphQLList(ListType),
       resolve: async currentUser => {
