@@ -15,7 +15,7 @@ const User_1 = require("../../../graphql/schema/User");
 const UserType_1 = require("../../../graphql/types/UserType");
 exports.userSearch = {
     type: new graphql_1.GraphQLList(UserType_1.UserType),
-    description: 'Find out if a duplicate place is being added to a list',
+    description: 'Search for users',
     args: {
         query: { type: graphql_1.GraphQLString }
     },
@@ -24,7 +24,6 @@ exports.userSearch = {
         const usernameMatch = yield User_1.User.find({
             $and: [{ $or: [{ username: regex }, { displayName: regex }] }]
         });
-        console.log(args.query);
         return usernameMatch;
     })
 };

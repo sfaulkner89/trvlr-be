@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
-import { User } from '../../graphql/schema/User'
-import { UserType } from '../../graphql/types/UserType'
+import { User } from '../../schema/User'
+import { UserType } from '../../types/UserType'
 
 export const getUser = {
   type: UserType,

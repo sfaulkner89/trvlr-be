@@ -10,10 +10,10 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    // "baseUrl": ".",
+    // "paths": {
+    //   "*": ["./node_modules/*"]
+    // }
   },
   "include": ["./**/*"]
 }

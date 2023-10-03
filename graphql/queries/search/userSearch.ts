@@ -4,7 +4,7 @@ import { UserType } from '../../../graphql/types/UserType'
 
 export const userSearch = {
   type: new GraphQLList(UserType),
-  description: 'Find out if a duplicate place is being added to a list',
+  description: 'Search for users',
   args: {
     query: { type: GraphQLString }
   },
@@ -14,8 +14,6 @@ export const userSearch = {
     const usernameMatch = await User.find({
       $and: [{ $or: [{ username: regex }, { displayName: regex }] }]
     })
-
-    console.log(args.query)
 
     return usernameMatch
   }

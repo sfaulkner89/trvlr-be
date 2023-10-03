@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putUser = exports.addPlaceToList = exports.createList = exports.createPlace = exports.unfollow = exports.follow = exports.createUser = void 0;
+exports.createGroup = exports.postMessage = exports.putUser = exports.addPlaceToList = exports.createList = exports.createPlace = exports.unfollow = exports.follow = exports.createUser = void 0;
 const createUser_1 = require("./users/createUser");
 Object.defineProperty(exports, "createUser", { enumerable: true, get: function () { return createUser_1.createUser; } });
 const putUser_1 = require("./users/putUser");
@@ -15,4 +15,8 @@ const createPlace_1 = require("./places/createPlace");
 Object.defineProperty(exports, "createPlace", { enumerable: true, get: function () { return createPlace_1.createPlace; } });
 const addPlaceToList_1 = require("./lists/addPlaceToList");
 Object.defineProperty(exports, "addPlaceToList", { enumerable: true, get: function () { return addPlaceToList_1.addPlaceToList; } });
+const postMessage_1 = require("./messages/postMessage");
+Object.defineProperty(exports, "postMessage", { enumerable: true, get: function () { return postMessage_1.postMessage; } });
+const createGroup_1 = require("./messages/createGroup");
+Object.defineProperty(exports, "createGroup", { enumerable: true, get: function () { return createGroup_1.createGroup; } });
 //# sourceMappingURL=index.js.map

@@ -5,7 +5,7 @@ import {
   GraphQLString
 } from 'graphql'
 import { List } from '../../graphql/schema/List'
-import { checkInLocation } from '../../types/gqlOutputTypes/checkInLocation'
+import { checkInLocation } from '../../types/gqlOutputTypes/CheckInLocation'
 import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'

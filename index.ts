@@ -12,12 +12,15 @@ import {
 import mongoose, { RootQuerySelector } from 'mongoose'
 import * as mutations from './graphql/mutations'
 import { getUser, checkDuplicatePlace, userSearch } from './graphql/queries'
+import { newMessages } from './graphql/subscriptions/newMessages'
+import { getUsers } from './graphql/queries/users/getUsers'
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
     getUser,
+    getUsers,
     checkDuplicatePlace,
     userSearch
   })
@@ -29,18 +32,18 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => mutations
 })
 
-// const RootSubscriptionType = new GraphQLObjectType({
-//   name: 'Subscription',
-// description: 'Root Subscription',
-// fields: () => {
-//   return
-// }
-// })
+const RootSubscriptionType = new GraphQLObjectType({
+  name: 'Subscription',
+  description: 'Root Subscription',
+  fields: () => ({
+    newMessages
+  })
+})
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  mutation: RootMutationType
-  // subscription: RootSubscriptionType
+  mutation: RootMutationType,
+  subscription: RootSubscriptionType
 })
 
 const startServer = async () => {

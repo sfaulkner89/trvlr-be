@@ -5,8 +5,8 @@ import { unfollow } from './followers/unfollow'
 import { createList } from './lists/createList'
 import { createPlace } from './places/createPlace'
 import { addPlaceToList } from './lists/addPlaceToList'
-import { checkDuplicatePlace } from '../queries/checkDuplicatePlace'
-
+import { postMessage } from './messages/postMessage'
+import { createGroup } from './messages/createGroup'
 export {
   createUser,
   follow,
@@ -14,5 +14,7 @@ export {
   createPlace,
   createList,
   addPlaceToList,
-  putUser
+  putUser,
+  postMessage,
+  createGroup
 }

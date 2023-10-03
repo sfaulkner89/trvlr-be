@@ -46,11 +46,14 @@ const apollo_server_core_1 = require("apollo-server-core");
 const mongoose_1 = __importDefault(require("mongoose"));
 const mutations = __importStar(require("./graphql/mutations"));
 const queries_1 = require("./graphql/queries");
+const newMessages_1 = require("./graphql/subscriptions/newMessages");
+const getUsers_1 = require("./graphql/queries/users/getUsers");
 const RootQueryType = new graphql_1.GraphQLObjectType({
     name: 'Query',
     description: 'Root Query',
     fields: () => ({
         getUser: queries_1.getUser,
+        getUsers: getUsers_1.getUsers,
         checkDuplicatePlace: queries_1.checkDuplicatePlace,
         userSearch: queries_1.userSearch
     })
@@ -60,17 +63,17 @@ const RootMutationType = new graphql_1.GraphQLObjectType({
     description: 'Root Mutation',
     fields: () => mutations
 });
-// const RootSubscriptionType = new GraphQLObjectType({
-//   name: 'Subscription',
-// description: 'Root Subscription',
-// fields: () => {
-//   return
-// }
-// })
+const RootSubscriptionType = new graphql_1.GraphQLObjectType({
+    name: 'Subscription',
+    description: 'Root Subscription',
+    fields: () => ({
+        newMessages: newMessages_1.newMessages
+    })
+});
 const schema = new graphql_1.GraphQLSchema({
     query: RootQueryType,
-    mutation: RootMutationType
-    // subscription: RootSubscriptionType
+    mutation: RootMutationType,
+    subscription: RootSubscriptionType
 });
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();

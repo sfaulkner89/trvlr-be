@@ -3,12 +3,12 @@ import {
   argsToArgsConfig,
   GraphQLInputObjectType
 } from 'graphql/type/definition'
-import { List } from '../schema/List'
+import { List } from '../../schema/List'
 import {
   initializePlace,
   PlaceInitialization
-} from '../mutations/places/createPlace'
-import { placeArgs } from '../../graphql/mutations/lists/createList'
+} from '../../mutations/places/createPlace'
+import { placeArgs } from '../../mutations/lists/createList'
 
 export const checkDuplicatePlace = {
   type: GraphQLBoolean,

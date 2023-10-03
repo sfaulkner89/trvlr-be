@@ -19,4 +19,4 @@ exports.checkInLocation = new graphql_1.GraphQLObjectType({
         }
     })
 });
-//# sourceMappingURL=checkInLocation.js.map
+//# sourceMappingURL=CheckInLocation.js.map
