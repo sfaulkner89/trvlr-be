@@ -11,6 +11,8 @@ import { LatLngGQL } from '../../types/gqlOutputTypes/LatLngGQL'
 import { User } from '../schema/User'
 import { PlaceType } from './PlaceType'
 import { UserType } from './UserType'
+import { CommentType } from './CommentType'
+import { Comment } from '../schema/Comment'
 
 export const ListType: GraphQLObjectType = new GraphQLObjectType({
   name: 'List',
@@ -29,16 +31,23 @@ export const ListType: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(PlaceType),
       resolve: userList =>
         userList.placeIds.map((placeId: string) => {
-          return Place.findOne({ id: placeId })
+          const place = Place.findOne({ id: placeId })
+          const comment = Comment.find({
+            _id: userList.commentIds,
+            placeId
+          })
+          return { ...place, comment }
         })
+    },
+    commentIds: { type: new GraphQLList(GraphQLString) },
+    comments: {
+      type: new GraphQLList(CommentType),
+      resolve: userList => Comment.find({})
     },
     followers: { type: new GraphQLList(GraphQLString) },
     followerProfiles: {
       type: new GraphQLList(UserType),
-      resolve: userList =>
-        userList.followers.map((follower: string) => {
-          return User.findOne({ id: follower })
-        })
+      resolve: userList => User.findOne({ id: userList.followers })
     },
     duplicatePlace: { type: GraphQLBoolean }
   })

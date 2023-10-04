@@ -10,6 +10,7 @@ export const ListSchema = new Schema({
   country: String,
   dateCreated: String,
   dateModified: String,
+  commentIds: Array,
   placeIds: Array,
   followers: Array
 })

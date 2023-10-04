@@ -10,7 +10,7 @@ export const PlaceSchema = new Schema({
   dateCreated: Date!,
   dateModified: Date!,
   ratings: Array,
-  comments: Array,
+  comment: String,
   price: Number,
   types: Array
 })

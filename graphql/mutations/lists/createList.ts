@@ -15,6 +15,8 @@ import { initializePlace, PlaceInitialization } from '../places/createPlace'
 import { PlaceCommentGQL } from '../../../types/gqlInputTypes/PlaceCommentGQL'
 import { PlaceRatingGQL } from '../../../types/gqlInputTypes/PlaceRatingGQL'
 import { User } from '../../../graphql/schema/User'
+import { Comment } from '../../schema/Comment'
+import createPlaceComment from '../places/newComment'
 
 type ListInitialization = {
   userId: string
@@ -68,6 +70,7 @@ export const createList = {
       dateModified: new Date().toDateString(),
       placeIds: initializedPlace ? [initializedPlace.id] : [],
       followers: [args.userId],
+      commentIds: [],
       ratings: [
         {
           id: v4(),
@@ -84,6 +87,20 @@ export const createList = {
         text: args.initialPlace ? args.initialPlace.comment : null
       }
     })
+    if (
+      args.initialPlace?.comment &&
+      list.id &&
+      initializedPlace?.id &&
+      args.userId
+    ) {
+      const commentId = await createPlaceComment(
+        initializedPlace.id,
+        args.userId,
+        list.id,
+        args.initialPlace.comment
+      )
+      list.commentIds.push(commentId)
+    }
     const listMaker = await User.findOne({ id: args.userId })
     listMaker.listIds.push(listId)
 
