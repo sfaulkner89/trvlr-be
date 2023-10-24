@@ -29,21 +29,19 @@ export const ListType: GraphQLObjectType = new GraphQLObjectType({
     placeIds: { type: new GraphQLList(GraphQLString) },
     places: {
       type: new GraphQLList(PlaceType),
-      resolve: userList =>
-        userList.placeIds.map((placeId: string) => {
+      resolve: async userList =>
+        userList.placeIds.map(async (placeId: string) => {
           const place = Place.findOne({ id: placeId })
-          const comment = Comment.find({
+          const comment = await Comment.findOne({
             _id: userList.commentIds,
-            placeId
+            placeId,
+            listId: userList.id
           })
-          return { ...place, comment }
+          if (comment) return { ...place, comment: comment.content }
+          return place
         })
     },
     commentIds: { type: new GraphQLList(GraphQLString) },
-    comments: {
-      type: new GraphQLList(CommentType),
-      resolve: userList => Comment.find({})
-    },
     followers: { type: new GraphQLList(GraphQLString) },
     followerProfiles: {
       type: new GraphQLList(UserType),
