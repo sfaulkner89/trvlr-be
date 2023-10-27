@@ -31,9 +31,10 @@ export const createGroup = {
       messages: [message]
     })
     for (const member of members) {
-      const groupUser = await User.findById(member)
+      const groupUser = await User.findOne({ id: member })
       groupUser.groups.push(newGroup._id)
       groupUser.save()
     }
+    return newGroup
   }
 }

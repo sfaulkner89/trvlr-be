@@ -6,6 +6,7 @@ import {
 } from 'graphql'
 import { List } from '../../graphql/schema/List'
 import { checkInLocation } from '../../types/gqlOutputTypes/CheckInLocation'
+import { MessageGroup } from '../schema/Message'
 import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'
@@ -34,7 +35,22 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         )
       }
     },
-    groups: { type: new GraphQLList(GroupType) },
+    groupIds: { type: new GraphQLList(GroupType) },
+    groups: {
+      type: new GraphQLList(GroupType),
+      resolve: async currentUser => {
+        currentUser.groupIds.map(async (groupId: string) => {
+          const group = await MessageGroup.findOne({ id: groupId })
+          const groupMembers = group.members.map(async memberId => {
+            return await User.findOne({ id: memberId })
+          })
+          return {
+            ...group,
+            members: groupMembers
+          }
+        })
+      }
+    },
     followerUsers: {
       type: new GraphQLList(UserType),
       resolve: async currentUser => {
