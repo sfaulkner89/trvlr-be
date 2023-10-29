@@ -1,4 +1,5 @@
 import {
+  GraphQLBoolean,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -27,6 +28,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     countries: { type: new GraphQLList(GraphQLString) },
     listIds: { type: new GraphQLList(GraphQLString) },
     checkInLocation: { type: checkInLocation },
+    admin: { type: GraphQLBoolean, defaultValue: false },
     lists: {
       type: new GraphQLList(ListType),
       resolve: async currentUser => {
