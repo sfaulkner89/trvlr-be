@@ -11,6 +11,7 @@ import { MessageGroup } from '../schema/Message'
 import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'
+import { CountryOutput } from '../../types/gqlOutputTypes/CountryOutput'
 
 export const UserType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
@@ -25,7 +26,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     profileLocation: { type: GraphQLString },
     followers: { type: new GraphQLList(GraphQLString) },
     following: { type: new GraphQLList(GraphQLString) },
-    countries: { type: new GraphQLList(GraphQLString) },
+    countries: { type: new GraphQLList(CountryOutput) },
     listIds: { type: new GraphQLList(GraphQLString) },
     checkInLocation: { type: checkInLocation },
     admin: { type: GraphQLBoolean, defaultValue: false },
