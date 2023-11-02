@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 export const ListSchema = new Schema({
-  id: String!,
+  id: { type: String!, index: true },
   displayName: String,
   photoLocation: String,
   location: Object,

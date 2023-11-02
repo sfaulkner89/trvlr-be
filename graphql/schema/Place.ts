@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 export const PlaceSchema = new Schema({
-  id: String!,
+  id: { type: String!, index: true },
   name: String!,
   googlePlaceId: String!,
   location: Object!,

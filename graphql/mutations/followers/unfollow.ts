@@ -20,7 +20,9 @@ export const unfollow = {
     const followUser = await User.findOne({ id: args.followId })
 
     currentUser.following.filter(id => id !== args.followId)
+    currentUser.contactIds.filter(contact => contact.id !== args.followId)
     followUser.followers.filter(id => id !== args.userId)
+    followUser.contactIds.filter(contact => contact.id !== args.userId)
 
     currentUser.save()
     followUser.save()

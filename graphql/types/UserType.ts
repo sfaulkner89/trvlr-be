@@ -28,30 +28,54 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     following: { type: new GraphQLList(GraphQLString) },
     countries: { type: new GraphQLList(CountryOutput) },
     listIds: { type: new GraphQLList(GraphQLString) },
+    group: { type: GraphQLString },
     checkInLocation: { type: checkInLocation },
     admin: { type: GraphQLBoolean, defaultValue: false },
+    contactIds: {
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: 'ContactIds',
+          fields: () => ({
+            id: { type: GraphQLString },
+            group: { type: GraphQLString }
+          })
+        })
+      )
+    },
+    contacts: {
+      type: new GraphQLList(UserType),
+      resolve: async currentUser => {
+        return await User.aggregate([
+          { $match: { id: currentUser.id } },
+          { $unwind: '$contactIds' },
+          {
+            $lookup: {
+              from: 'profiles',
+              localField: 'contactIds.id',
+              foreignField: 'id',
+              as: 'profile'
+            }
+          },
+          {
+            $unwind: '$profile'
+          },
+          {
+            $addFields: {
+              'profile.group': '$contactIds.group'
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: '$profile'
+            }
+          }
+        ])
+      }
+    },
     lists: {
       type: new GraphQLList(ListType),
       resolve: async currentUser => {
-        return currentUser.listIds.map(
-          async (listId: string) => await List.findOne({ id: listId })
-        )
-      }
-    },
-    groupIds: { type: new GraphQLList(GroupType) },
-    groups: {
-      type: new GraphQLList(GroupType),
-      resolve: async currentUser => {
-        currentUser.groupIds.map(async (groupId: string) => {
-          const group = await MessageGroup.findOne({ id: groupId })
-          const groupMembers = group.members.map(async memberId => {
-            return await User.findOne({ id: memberId })
-          })
-          return {
-            ...group,
-            members: groupMembers
-          }
-        })
+        return await List.find({ id: currentUser.listIds })
       }
     },
     followerUsers: {

@@ -1,8 +1,13 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
+const ContactIdSchema = new Schema({
+  id: String!,
+  group: String!
+})
+
 export const UserSchema = new Schema({
-  id: String,
+  id: { type: String, index: true },
   email: String,
   password: String,
   username: String,
@@ -13,7 +18,7 @@ export const UserSchema = new Schema({
   following: Array,
   countries: Array,
   listIds: Array,
-  groups: Array,
+  contactIds: [ContactIdSchema],
   checkInLocation: {
     location: {
       latitude: Number,
