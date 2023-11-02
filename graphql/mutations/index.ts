@@ -6,7 +6,6 @@ import { createList } from './lists/createList'
 import { createPlace } from './places/createPlace'
 import { addPlaceToList } from './lists/addPlaceToList'
 import { postMessage } from './messages/postMessage'
-import { createGroup } from './messages/createGroup'
 export {
   createUser,
   follow,
@@ -15,6 +14,5 @@ export {
   createList,
   addPlaceToList,
   putUser,
-  postMessage,
-  createGroup
+  postMessage
 }
