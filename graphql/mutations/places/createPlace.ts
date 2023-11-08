@@ -1,5 +1,4 @@
 import { PlaceType } from '../../../graphql/types/PlaceType'
-import { PlaceComment } from '../../../types/tsTypes/PlaceComment'
 import { PlaceRating } from '../../../types/tsTypes/PlaceRating'
 import { Place } from '../../../graphql/schema/Place'
 import { v4 } from 'uuid'
@@ -15,7 +14,7 @@ export type PlaceInitialization = {
   dateCreated: string
   dateModified: string
   rating?: PlaceRating
-  comment?: string
+  note?: string
   types?: string[]
   price?: number
 }
@@ -24,10 +23,12 @@ export const initializePlace = async (
   _parent: undefined,
   args: PlaceInitialization
 ) => {
+  console.log(args.googlePlaceId)
   const existingPlace = await Place.findOne({
     googlePlaceId: args.googlePlaceId
   })
   if (existingPlace) {
+    console.log('existing place found')
     return existingPlace
   }
   const place = new Place({
@@ -40,7 +41,6 @@ export const initializePlace = async (
     dateCreated: new Date(),
     dateModified: new Date(),
     ratings: args.rating ? [args.rating] : [],
-    comments: args.comment ? [args.comment] : [],
     types: args.types ? args.types : [],
     price: args.price
   })

@@ -13,6 +13,7 @@ import mongoose, { RootQuerySelector } from 'mongoose'
 import * as mutations from './graphql/mutations'
 import * as queries from './graphql/queries'
 import { newMessages } from './graphql/subscriptions/newMessages'
+import { ApolloServerErrorCode } from '@apollo/server/errors'
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -54,6 +55,19 @@ const startServer = async () => {
   const httpServer = http.createServer(app)
   const server = new ApolloServer({
     schema,
+    formatError: formattedError => {
+      // Return a different error message
+      if (
+        formattedError.extensions.code ===
+        ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED
+      ) {
+        return {
+          ...formattedError,
+          message:
+            "Your query doesn't match the schema. Try double-checking it!"
+        }
+      }
+    },
     csrfPrevention: true,
     cache: 'bounded',
     plugins: [

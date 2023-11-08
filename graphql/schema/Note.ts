@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
-export const CommentSchema = new Schema({
+export const NoteSchema = new Schema({
   id: String!,
   placeId: String!,
   userId: String!,
@@ -11,4 +11,4 @@ export const CommentSchema = new Schema({
   dateModified: String!
 })
 
-export const Comment = mongoose.model('comments', CommentSchema)
+export const Note = mongoose.model('notes', NoteSchema)

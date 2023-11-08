@@ -12,11 +12,8 @@ import { v4 } from 'uuid'
 import { ListType } from '../../../graphql/types/ListType'
 import { LatLngGQL } from '../../../types/gqlInputTypes/LatLngGQL'
 import { initializePlace, PlaceInitialization } from '../places/createPlace'
-import { PlaceCommentGQL } from '../../../types/gqlInputTypes/PlaceCommentGQL'
-import { PlaceRatingGQL } from '../../../types/gqlInputTypes/PlaceRatingGQL'
 import { User } from '../../../graphql/schema/User'
-import { Comment } from '../../schema/Comment'
-import createPlaceComment from '../places/newComment'
+import { Note } from '../../schema/Note'
 
 type ListInitialization = {
   userId: string
@@ -34,7 +31,7 @@ export const placeArgs = {
   city: { type: GraphQLString },
   country: { type: GraphQLString },
   rating: { type: GraphQLFloat },
-  comment: { type: GraphQLString },
+  note: { type: GraphQLString },
   types: { type: new GraphQLList(GraphQLString) }
 }
 
@@ -55,6 +52,7 @@ export const createList = {
   },
   resolve: async (_parent: undefined, args: ListInitialization) => {
     let initializedPlace
+    console.log(args)
     if (args.initialPlace) {
       initializedPlace = await initializePlace(_parent, args.initialPlace)
     }
@@ -66,11 +64,10 @@ export const createList = {
       location: args.location,
       city: args.city,
       country: args.country,
-      dateCreated: new Date().toDateString(),
-      dateModified: new Date().toDateString(),
+      dateCreated: new Date(),
+      dateModified: new Date(),
       placeIds: initializedPlace ? [initializedPlace.id] : [],
       followers: [args.userId],
-      commentIds: [],
       ratings: [
         {
           id: v4(),
@@ -78,29 +75,27 @@ export const createList = {
           dateCreated: new Date(),
           stars: args.initialPlace ? args.initialPlace.rating : null
         }
-      ],
-      comments: {
-        id: v4(),
-        userId: args.userId,
-        dateCreated: new Date().toDateString(),
-        likes: 0,
-        text: args.initialPlace ? args.initialPlace.comment : null
-      }
+      ]
     })
     if (
-      args.initialPlace?.comment &&
+      args.initialPlace?.note &&
       list.id &&
       initializedPlace?.id &&
       args.userId
     ) {
-      const commentId = await createPlaceComment(
-        initializedPlace.id,
-        args.userId,
-        list.id,
-        args.initialPlace.comment
-      )
-      list.commentIds.push(commentId)
+      const note = new Note({
+        id: v4(),
+        placeId: initializedPlace.id,
+        userId: args.userId,
+        listId: list.id,
+        content: args.initialPlace.note,
+        dateCreated: new Date(),
+        dateModified: new Date()
+      })
+      list.noteIds.push(note.id)
+      await note.save()
     }
+
     const listMaker = await User.findOne({ id: args.userId })
     listMaker.listIds.push(listId)
 

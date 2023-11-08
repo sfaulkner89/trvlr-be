@@ -1,6 +1,5 @@
 import {
   GraphQLBoolean,
-  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -11,8 +10,7 @@ import { LatLngGQL } from '../../types/gqlOutputTypes/LatLngGQL'
 import { User } from '../schema/User'
 import { PlaceType } from './PlaceType'
 import { UserType } from './UserType'
-import { CommentType } from './CommentType'
-import { Comment } from '../schema/Comment'
+import { Note } from '../schema/Note'
 
 export const ListType: GraphQLObjectType = new GraphQLObjectType({
   name: 'List',
@@ -27,17 +25,19 @@ export const ListType: GraphQLObjectType = new GraphQLObjectType({
     dateCreated: { type: GraphQLString },
     dateModified: { type: GraphQLString },
     placeIds: { type: new GraphQLList(GraphQLString) },
+    noteIds: { type: new GraphQLList(GraphQLString) },
+    deleted: { type: GraphQLBoolean, defaultValue: false },
     places: {
       type: new GraphQLList(PlaceType),
       resolve: async userList =>
         userList.placeIds.map(async (placeId: string) => {
           const place = Place.findOne({ id: placeId })
-          const comment = await Comment.findOne({
+          const note = await Note.findOne({
             _id: userList.commentIds,
             placeId,
             listId: userList.id
           })
-          if (comment) return { ...place, comment: comment.content }
+          if (note) return { ...place, note: note.content }
           return place
         })
     },

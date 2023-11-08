@@ -12,7 +12,9 @@ export const ListSchema = new Schema({
   dateModified: String,
   commentIds: Array,
   placeIds: Array,
-  followers: Array
+  noteIds: Array,
+  followers: Array,
+  deleted: Boolean
 })
 
 export const List = mongoose.model('lists', ListSchema)

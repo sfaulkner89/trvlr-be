@@ -28,8 +28,10 @@ export const checkDuplicatePlace = {
     args: { listId: string; place: PlaceInitialization }
   ) => {
     const placeToAdd = await initializePlace(_parent, args.place)
-    console.log('duplicate checked')
+    console.log('placeToAdd', placeToAdd)
     const listToCheck = await List.findOne({ id: args.listId })
-    return listToCheck.placeIds.includes(placeToAdd.id)
+    const isDuplicate = listToCheck.placeIds.includes(placeToAdd.id)
+    console.log('isDuplicate', isDuplicate)
+    return isDuplicate
   }
 }
