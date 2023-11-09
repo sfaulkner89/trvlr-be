@@ -7,6 +7,7 @@ import { placeArgs } from '../lists/createList'
 
 export type PlaceInitialization = {
   name: string
+  address: string
   googlePlaceId: string
   location: LatLng
   city?: string

@@ -4,6 +4,7 @@ export const PlaceSchema = new Schema({
   id: { type: String!, index: true },
   name: String!,
   googlePlaceId: String!,
+  address: String,
   location: Object!,
   city: String,
   country: String,

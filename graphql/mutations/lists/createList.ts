@@ -26,12 +26,14 @@ type ListInitialization = {
 
 export const placeArgs = {
   name: { type: new GraphQLNonNull(GraphQLString) },
+  address: { type: GraphQLString },
   googlePlaceId: { type: new GraphQLNonNull(GraphQLString) },
   location: { type: new GraphQLNonNull(LatLngGQL) },
   city: { type: GraphQLString },
   country: { type: GraphQLString },
   rating: { type: GraphQLFloat },
   note: { type: GraphQLString },
+  price: { type: GraphQLInt },
   types: { type: new GraphQLList(GraphQLString) }
 }
 

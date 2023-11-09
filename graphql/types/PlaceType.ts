@@ -14,6 +14,7 @@ export const PlaceType: GraphQLObjectType = new GraphQLObjectType({
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLString) },
     name: { type: new GraphQLNonNull(GraphQLString) },
+    address: { type: GraphQLString },
     googlePlaceId: { type: new GraphQLNonNull(GraphQLString) },
     location: { type: new GraphQLNonNull(LatLngGQL) },
     city: { type: GraphQLString },
