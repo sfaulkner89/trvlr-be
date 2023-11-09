@@ -13,7 +13,7 @@ import mongoose, { RootQuerySelector } from 'mongoose'
 import * as mutations from './graphql/mutations'
 import * as queries from './graphql/queries'
 import { newMessages } from './graphql/subscriptions/newMessages'
-import { deleteList } from './lists/deleteList'
+import { deleteList } from './graphql/mutations/lists/deleteList'
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
