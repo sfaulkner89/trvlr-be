@@ -11,8 +11,6 @@ type NewMessage = {
   message: Message
 }
 
-const pubsub = new PubSub()
-
 export const postMessage = {
   type: MessageGroupType,
   description: 'Add a message to a group',
@@ -20,11 +18,20 @@ export const postMessage = {
     id: { type: GraphQLString },
     message: { type: MessageGQLInput }
   },
-  resolve: async (_parent: undefined, args: NewMessage) => {
+  resolve: async (
+    _parent: undefined,
+    args: NewMessage,
+    context: { pubsub: PubSub }
+  ) => {
     const { id, message } = args
     const messageGroup = await MessageGroup.findById(id)
     messageGroup.messages.push(message)
+    console.log(context)
+    // pubsub.publish('MESSAGE_SENT', {
+    //   messageSent: messageGroup.messages
+    // }),
     messageGroup.save()
-    pubsub.publish('NEW_MESSAGE', message)
+
+    return messageGroup
   }
 }

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { InferSchemaType } from 'mongoose'
 const { Schema } = mongoose
 
 const MessageSchema = new Schema({
@@ -11,9 +11,10 @@ const MessageSchema = new Schema({
 export const MessageGroupSchema = new Schema({
   name: String,
   group: Boolean!,
-  members: [String],
+  members: [String]!,
   messages: [MessageSchema],
   dateCreated: Date!
 })
 
 export const MessageGroup = mongoose.model('messages', MessageGroupSchema)
+export type MessageGroup = InferSchemaType<typeof MessageGroupSchema>

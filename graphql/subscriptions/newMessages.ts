@@ -3,12 +3,12 @@ import { MessageGroupType } from '../../graphql/types/MessageGroupType'
 import { PubSub } from 'graphql-subscriptions'
 import { MessageGroup } from '../schema/Message'
 
-const pubsub = new PubSub()
-
 export const newMessages = {
   type: new GraphQLList(MessageGroupType),
   description: 'New messages from the server',
-  subscribe: () => pubsub.asyncIterator(['MESSAGE_SENT']),
+  subscribe: (_: undefined, __: undefined, context: { pubsub: PubSub }) => {
+    return context.pubsub.asyncIterator(['MESSAGE_SENT'])
+  },
   args: {
     ids: { type: new GraphQLList(GraphQLString) }
   },
