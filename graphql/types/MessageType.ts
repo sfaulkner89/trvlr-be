@@ -6,7 +6,7 @@ import {
 } from 'graphql'
 
 export const MessageType: GraphQLObjectType = new GraphQLObjectType({
-  name: 'MessageGroup',
+  name: 'MessageType',
   description: 'A message group',
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLString) },

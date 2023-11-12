@@ -4,20 +4,24 @@ import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
 import http from 'http'
-import { ApolloServer } from '@apollo/server'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import mongoose, { RootQuerySelector } from 'mongoose'
+import { ApolloServer } from 'apollo-server-express'
+import mongoose from 'mongoose'
 import * as mutations from './graphql/mutations'
 import * as queries from './graphql/queries'
 import { newMessages } from './graphql/subscriptions/newMessages'
 import { PubSub } from 'graphql-subscriptions'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
-import { expressMiddleware } from '@apollo/server/express4'
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault
+} from 'apollo-server-core'
+import { Request } from 'express'
 
-type AppContext = {
+export type AppContext = {
   token?: string
 }
+const pubsub = new PubSub()
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -45,12 +49,29 @@ const schema = new GraphQLSchema({
   subscription: RootSubscriptionType
 })
 
+const contextMiddleware = (
+  req: Request & { context: { pubsub: PubSub } },
+  _res: Response,
+  next: () => void
+) => {
+  req.context = {
+    pubsub
+  }
+  next()
+}
+
 const startServer = async () => {
   const app = express()
   app.use(cors())
   app.use(router)
-
-  const pubsub = new PubSub()
+  app.use(
+    '/graphql',
+    contextMiddleware,
+    graphqlHTTP({
+      schema,
+      graphiql: true
+    })
+  )
 
   const httpServer = http.createServer(app)
 
@@ -69,12 +90,13 @@ const startServer = async () => {
     wsServer
   )
 
-  const server = new ApolloServer<AppContext>({
+  const server = new ApolloServer({
     schema,
     csrfPrevention: true,
     cache: 'bounded',
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault(),
       {
         async serverWillStart () {
           return {
@@ -89,17 +111,7 @@ const startServer = async () => {
 
   await server.start()
 
-  app.use(
-    '/graphql',
-    graphqlHTTP({
-      schema,
-      graphiql: true
-    }),
-    express.json(),
-    expressMiddleware(server, {
-      context: async () => ({ pubsub })
-    })
-  )
+  server.applyMiddleware({ app })
 
   const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}/?retryWrites=true&w=majority`
   mongoose.connect(url)

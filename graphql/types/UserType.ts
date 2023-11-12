@@ -12,6 +12,7 @@ import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'
 import { CountryOutput } from '../../types/gqlOutputTypes/CountryOutput'
+import { MessageGroupType } from './MessageGroupType'
 
 export const UserType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
@@ -31,6 +32,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     group: { type: GraphQLString },
     checkInLocation: { type: checkInLocation },
     admin: { type: GraphQLBoolean, defaultValue: false },
+    messagingGroups: { type: new GraphQLList(MessageGroupType) },
     contactIds: {
       type: new GraphQLList(
         new GraphQLObjectType({
@@ -94,5 +96,11 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         )
       }
     }
+    // messagingGroups: {
+    //   type: new GraphQLList(MessageGroupType),
+    //   resolve: async currentUser => {
+    //     return await MessageGroup.find({ members: currentUser.messageGroupIds })
+    //   }
+    // }
   })
 })

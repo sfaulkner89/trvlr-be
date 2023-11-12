@@ -2,6 +2,7 @@ import { GraphQLList, GraphQLString, subscribe } from 'graphql'
 import { MessageGroupType } from '../../graphql/types/MessageGroupType'
 import { PubSub } from 'graphql-subscriptions'
 import { MessageGroup } from '../schema/Message'
+import { User } from '../schema/User'
 
 export const newMessages = {
   type: new GraphQLList(MessageGroupType),
@@ -13,7 +14,10 @@ export const newMessages = {
     ids: { type: new GraphQLList(GraphQLString) }
   },
   resolve: async (_parent: undefined, args: { ids: string[] }) => {
-    const newMessages = await MessageGroup.find({ id: { $in: args.ids } })
+    console.log('IDS', args.ids)
+    const newMessages = await User.findOne({ id: args.ids })
+    const messageGroups = await MessageGroup.find({ id: newMessages })
+    console.log('newMessages', messageGroups)
     return newMessages
   }
 }

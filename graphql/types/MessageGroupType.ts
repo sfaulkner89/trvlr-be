@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 import { MessageType } from './MessageType'
 import { MessageGQL } from '../../types/gqlOutputTypes/Message'
+import { UserType } from './UserType'
 
 export const MessageGroupType: GraphQLObjectType = new GraphQLObjectType({
   name: 'MessageGroup',
@@ -16,10 +17,11 @@ export const MessageGroupType: GraphQLObjectType = new GraphQLObjectType({
     return {
       id: { type: new GraphQLNonNull(GraphQLString) },
       name: { type: GraphQLString },
-      members: { type: new GraphQLList(GraphQLString) },
+      members: { type: new GraphQLList(UserType) },
       group: { type: GraphQLBoolean },
       messages: { type: new GraphQLList(MessageGQL) },
-      dateCreated: { type: GraphQLString }
+      dateCreated: { type: GraphQLString },
+      dateModified: { type: GraphQLString }
     }
   }
 })
