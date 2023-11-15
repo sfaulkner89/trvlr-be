@@ -11,7 +11,7 @@ import { List } from '../../../graphql/schema/List'
 import { User } from '../../../graphql/schema/User'
 import { UserType } from '../../types/UserType'
 
-export const deleteList = {
+export default {
   type: UserType,
   description: 'Removes a list from a user',
   args: {
