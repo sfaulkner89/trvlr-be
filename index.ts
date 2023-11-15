@@ -39,6 +39,7 @@ const RootMutationType = new GraphQLObjectType({
 const RootSubscriptionType = new GraphQLObjectType({
   name: 'Subscription',
   description: 'Root Subscription',
+  //@ts-ignore: next line is fine
   fields: () => subscriptions
 })
 
