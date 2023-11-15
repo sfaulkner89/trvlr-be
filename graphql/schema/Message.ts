@@ -1,7 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose, { InferSchemaType } from 'mongoose'
 const { Schema } = mongoose
 
 const MessageSchema = new Schema({
+  id: String!,
   to: [String]!,
   from: String!,
   message: String!,
@@ -9,11 +10,20 @@ const MessageSchema = new Schema({
 })
 
 export const MessageGroupSchema = new Schema({
+  id: String!,
   name: String,
   group: Boolean!,
-  members: [String],
+  members: [String]!,
   messages: [MessageSchema],
-  dateCreated: Date!
+  dateCreated: Date!,
+  dateModified: Date!
+})
+
+MessageGroupSchema.virtual('memberData', {
+  ref: 'profiles',
+  localField: 'members',
+  foreignField: 'id'
 })
 
 export const MessageGroup = mongoose.model('messages', MessageGroupSchema)
+export type MessageGroupTS = InferSchemaType<typeof MessageGroupSchema>

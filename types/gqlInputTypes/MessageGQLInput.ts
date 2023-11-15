@@ -12,7 +12,6 @@ export const MessageGQLInput: GraphQLInputObjectType =
     fields: {
       to: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
       from: { type: new GraphQLNonNull(GraphQLString) },
-      message: { type: new GraphQLNonNull(GraphQLString) },
-      dateCreated: { type: new GraphQLNonNull(GraphQLString) }
+      message: { type: new GraphQLNonNull(GraphQLString) }
     }
   })

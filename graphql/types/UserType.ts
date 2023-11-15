@@ -12,6 +12,7 @@ import { User } from '../schema/User'
 import { GroupType } from './GroupType'
 import { ListType } from './ListType'
 import { CountryOutput } from '../../types/gqlOutputTypes/CountryOutput'
+import { MessageGroupType } from './MessageGroupType'
 
 export const UserType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
@@ -28,16 +29,22 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
     following: { type: new GraphQLList(GraphQLString) },
     countries: { type: new GraphQLList(CountryOutput) },
     listIds: { type: new GraphQLList(GraphQLString) },
+    visible: { type: GraphQLBoolean, defaultValue: true },
     group: { type: GraphQLString },
     checkInLocation: { type: checkInLocation },
     admin: { type: GraphQLBoolean, defaultValue: false },
+    messagingGroups: {
+      type: new GraphQLList(MessageGroupType),
+      defaultValue: []
+    },
     contactIds: {
       type: new GraphQLList(
         new GraphQLObjectType({
           name: 'ContactIds',
           fields: () => ({
             id: { type: GraphQLString },
-            group: { type: GraphQLString }
+            group: { type: GraphQLString },
+            visible: { type: GraphQLBoolean }
           })
         })
       )
@@ -62,6 +69,11 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
           {
             $addFields: {
               'profile.group': '$contactIds.group'
+            }
+          },
+          {
+            $addFields: {
+              'profile.visible': '$contactIds.visible'
             }
           },
           {
@@ -94,5 +106,11 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         )
       }
     }
+    // messagingGroups: {
+    //   type: new GraphQLList(MessageGroupType),
+    //   resolve: async currentUser => {
+    //     return await MessageGroup.find({ members: currentUser.messageGroupIds })
+    //   }
+    // }
   })
 })
