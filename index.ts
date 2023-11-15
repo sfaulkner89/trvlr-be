@@ -17,6 +17,7 @@ import {
   ApolloServerPluginLandingPageLocalDefault
 } from 'apollo-server-core'
 import { Request } from 'express'
+import subscriptions from './graphql/subscriptions'
 
 export type AppContext = {
   token?: string
@@ -38,9 +39,7 @@ const RootMutationType = new GraphQLObjectType({
 const RootSubscriptionType = new GraphQLObjectType({
   name: 'Subscription',
   description: 'Root Subscription',
-  fields: () => ({
-    newMessages
-  })
+  fields: () => subscriptions
 })
 
 const schema = new GraphQLSchema({

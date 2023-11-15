@@ -29,7 +29,10 @@ export const getUser = {
           }
         },
         {
-          $unwind: '$messagingGroups'
+          $unwind: {
+            path: '$messagingGroups',
+            preserveNullAndEmptyArrays: true
+          }
         },
         {
           $lookup: {
@@ -62,9 +65,12 @@ export const getUser = {
         }
       ])
 
-      console.log(populatedUser[0].messagingGroups[0].dateCreated)
+      if (populatedUser[0]?.messagingGroups[0]?.members?.length === 0)
+        populatedUser[0].messagingGroups = []
 
       return populatedUser[0]
+    } else {
+      return await User.findOne({ id: args.id })
     }
     return await User.findOne({ id: args.id })
   }

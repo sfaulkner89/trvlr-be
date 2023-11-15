@@ -26,7 +26,6 @@ export const postMessage = {
     args: NewMessage,
     { context: pubsub }: { context: { pubsub: PubSub } }
   ) => {
-    console.log('args', args)
     const { userId, message, groupId } = args
     const existingMessageGroup = await MessageGroup.findOne({ id: groupId })
     existingMessageGroup.dateModified = new Date()
@@ -39,11 +38,11 @@ export const postMessage = {
       dateCreated: new Date()
     })
     pubsub.pubsub.publish('MESSAGE_SENT', {
-      messageSent: existingMessageGroup
+      newMessages: existingMessageGroup
     }),
       existingMessageGroup.save()
 
-    console.log('existingMessageGroup', existingMessageGroup)
+    console.log('existingMessageGroup PM', existingMessageGroup)
 
     return existingMessageGroup
   }

@@ -4,7 +4,8 @@ const { Schema } = mongoose
 
 const ContactIdSchema = new Schema({
   id: String!,
-  group: String!
+  group: String!,
+  visible: { type: Boolean, default: true }
 })
 
 export const UserSchema = new Schema(

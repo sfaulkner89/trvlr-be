@@ -1,23 +1,35 @@
 import { GraphQLList, GraphQLString, subscribe } from 'graphql'
 import { MessageGroupType } from '../../graphql/types/MessageGroupType'
-import { PubSub } from 'graphql-subscriptions'
-import { MessageGroup } from '../schema/Message'
-import { User } from '../schema/User'
+import { PubSub, withFilter } from 'graphql-subscriptions'
+import { MessageGroupTS } from '../schema/Message'
 
 export const newMessages = {
-  type: new GraphQLList(MessageGroupType),
+  type: MessageGroupType,
   description: 'New messages from the server',
-  subscribe: (_: undefined, __: undefined, context: { pubsub: PubSub }) => {
-    return context.pubsub.asyncIterator(['MESSAGE_SENT'])
-  },
+  subscribe: withFilter(
+    (_: undefined, __: undefined, context: { pubsub: PubSub }) => {
+      console.log("Subscribing to 'MESSAGE_SENT")
+      return context.pubsub.asyncIterator(['MESSAGE_SENT'])
+    },
+    (payload, variables) => {
+      return payload.newMessages.members.includes(variables.id)
+    }
+  ),
   args: {
-    ids: { type: new GraphQLList(GraphQLString) }
+    id: { type: GraphQLString },
+    date: { type: GraphQLString }
   },
-  resolve: async (_parent: undefined, args: { ids: string[] }) => {
-    console.log('IDS', args.ids)
-    const newMessages = await User.findOne({ id: args.ids })
-    const messageGroups = await MessageGroup.find({ id: newMessages })
-    console.log('newMessages', messageGroups)
-    return newMessages
+  resolve: async (
+    _parent: undefined,
+    args: { id: string },
+    _context: undefined,
+    subStuff: {
+      rootValue: {
+        newMessages: MessageGroupTS[]
+      }
+    }
+  ) => {
+    console.log('subStuff', subStuff)
+    return subStuff?.rootValue?.newMessages
   }
 }

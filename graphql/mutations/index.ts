@@ -8,6 +8,7 @@ import { addPlaceToList } from './lists/addPlaceToList'
 import { postMessage } from './messages/postMessage'
 import { deleteList } from './lists/deleteList'
 import { createGroup } from './messages/createGroup'
+import { putContact } from './users/putContact'
 export {
   createUser,
   follow,
@@ -18,5 +19,6 @@ export {
   putUser,
   postMessage,
   deleteList,
-  createGroup
+  createGroup,
+  putContact
 }
