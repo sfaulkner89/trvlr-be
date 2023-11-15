@@ -7,11 +7,11 @@ import {
   GraphQLObjectType,
   GraphQLString
 } from 'graphql'
-import { List } from '../../../graphql/schema/List'
-import { User } from '../../../graphql/schema/User'
+import { List } from '../../schema/List'
+import { User } from '../../schema/User'
 import { UserType } from '../../types/UserType'
 
-export default {
+export const deleteList = {
   type: UserType,
   description: 'Removes a list from a user',
   args: {
