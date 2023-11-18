@@ -9,6 +9,8 @@ import { postMessage } from './messages/postMessage'
 import { deleteList } from './lists/deleteTheList'
 import { createGroup } from './messages/createGroup'
 import { putContact } from './users/putContact'
+import { postDetails } from './signup/postDetails'
+import { putDetails } from './signup/putDetails'
 export {
   createUser,
   follow,
@@ -20,5 +22,7 @@ export {
   postMessage,
   deleteList,
   createGroup,
-  putContact
+  putContact,
+  postDetails,
+  putDetails
 }

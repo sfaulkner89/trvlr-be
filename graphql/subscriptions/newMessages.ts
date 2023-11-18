@@ -25,11 +25,10 @@ export const newMessages = {
     _context: undefined,
     subStuff: {
       rootValue: {
-        newMessages: MessageGroupTS[]
+        newMessages: MessageGroupTS
       }
     }
   ) => {
-    console.log('subStuff', subStuff)
     return subStuff?.rootValue?.newMessages
   }
 }
