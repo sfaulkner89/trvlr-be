@@ -72,6 +72,5 @@ export const getUser = {
     } else {
       return await User.findOne({ id: args.id })
     }
-    return await User.findOne({ id: args.id })
   }
 }

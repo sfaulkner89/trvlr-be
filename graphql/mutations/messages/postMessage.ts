@@ -28,7 +28,6 @@ export const postMessage = {
   ) => {
     const { userId, message, groupId } = args
     const existingMessageGroup = await MessageGroup.findOne({ id: groupId })
-    existingMessageGroup.dateModified = new Date()
     existingMessageGroup.messages.push({
       to: existingMessageGroup.members.filter(
         (member: string) => member !== userId

@@ -2,7 +2,7 @@ const express = require('express')
 import router from './routes/index'
 import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
-import { GraphQLObjectType, GraphQLSchema } from 'graphql'
+import { GraphQLObjectType, GraphQLSchema, printSchema } from 'graphql'
 import http from 'http'
 import { ApolloServer } from 'apollo-server-express'
 import mongoose from 'mongoose'
@@ -17,6 +17,7 @@ import {
 } from 'apollo-server-core'
 import { Request } from 'express'
 import subscriptions from './graphql/subscriptions'
+import fs from 'fs'
 
 export type AppContext = {
   token?: string
@@ -107,7 +108,7 @@ const startServer = async () => {
       }
     ]
   })
-
+  fs.writeFileSync('schema.graphql', printSchema(schema))
   await server.start()
 
   server.applyMiddleware({ app })

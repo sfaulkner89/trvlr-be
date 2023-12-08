@@ -1,9 +1,7 @@
-import { PlaceType } from '../../../graphql/types/PlaceType'
-import { PlaceRating } from '../../../types/tsTypes/PlaceRating'
-import { Place } from '../../../graphql/schema/Place'
 import { v4 } from 'uuid'
-import { LatLng } from '../../../types/tsTypes/LatLng'
-import { placeArgs } from '../lists/createList'
+import { Place, PlaceTS } from '../schema/Place'
+import { LatLng } from '../../types/tsTypes/LatLng'
+import { PlaceRating } from '../../types/tsTypes/PlaceRating'
 
 export type PlaceInitialization = {
   name: string
@@ -20,10 +18,7 @@ export type PlaceInitialization = {
   price?: number
 }
 
-export const initializePlace = async (
-  _parent: undefined,
-  args: PlaceInitialization
-) => {
+export default async (_parent: undefined, args: PlaceInitialization) => {
   console.log('Google Place Id' + args.googlePlaceId)
   const existingPlace = await Place.findOne({
     googlePlaceId: args.googlePlaceId
@@ -33,6 +28,7 @@ export const initializePlace = async (
     return existingPlace
   }
   const place = new Place({
+    id: v4(),
     name: args.name,
     googlePlaceId: args.googlePlaceId,
     location: args.location,
@@ -42,14 +38,6 @@ export const initializePlace = async (
     types: args.types ? args.types : [],
     price: args.price
   })
-
   await place.save()
   return place
-}
-
-export const createPlace = {
-  type: PlaceType,
-  description: 'Initialise a place',
-  args: placeArgs,
-  resolve: initializePlace
 }

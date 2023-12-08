@@ -1,0 +1,364 @@
+"""
+Root Query
+"""
+type Query {
+  """
+  Retrieve a user
+  """
+  getUser(id: String!, populated: Boolean = false): User
+
+  """
+  Find out if a duplicate place is being added to a list
+  """
+  checkDuplicatePlace(listId: String!, place: NewPlaceToCheck): Boolean
+
+  """
+  Search for users
+  """
+  userSearch(query: String): [User]
+
+  """
+  Retrieve a list
+  """
+  getList(id: String!): List
+
+  """
+  Retrieve a user with email and password
+  """
+  loginUser(email: String!, password: String!): User
+
+  """
+  Retrieve users
+  """
+  getContacts(userId: String!): User
+}
+
+"""
+A single user's data
+"""
+type User {
+  email: String!
+  password: String!
+  username: String!
+  displayName: String!
+  dob: String!
+  profileLocation: String
+  followers: [String]
+  following: [String]
+  countries: [CountryOutput]
+  listIds: [String]
+  visible: Boolean
+  group: String
+  checkInLocation: checkInOutput
+  admin: Boolean
+  messagingGroups: [MessageGroup]
+  contactIds: [ContactIds]
+  contacts: [User]
+  lists: [List]
+  followerUsers: [User]
+  followingUsers: [User]
+}
+
+type CountryOutput {
+  country: String
+  dateAdded: String
+}
+
+type checkInOutput {
+  location: LatLngOutput
+  placeId: String
+  names: checkInLocationOutput
+}
+
+type LatLngOutput {
+  longitude: Float
+  latitude: Float
+}
+
+type checkInLocationOutput {
+  main_text: String
+  secondary_text: String
+}
+
+"""
+A message group
+"""
+type MessageGroup {
+  name: String
+  members: [ID]
+  group: Boolean
+  messages: [Message]
+}
+
+type Message {
+  to: [ID]!
+  from: ID!
+  message: String!
+}
+
+type ContactIds {
+  id: String
+  group: String
+  visible: Boolean
+}
+
+"""
+A list
+"""
+type List {
+  displayName: String!
+  photoLocation: String
+  location: LatLngOutput
+  city: String
+  country: String
+  placeIds: [String]
+  noteIds: [String]
+  deleted: Boolean
+  places: [Place]
+  commentIds: [String]
+  followers: [String]
+  followerProfiles: [User]
+  duplicatePlace: Boolean
+}
+
+"""
+A place
+"""
+type Place {
+  name: String!
+  address: String
+  googlePlaceId: String!
+  location: LatLngOutput!
+  city: String
+  country: String
+  ratings: [PlaceRatingOutput]
+  comments: [PlaceCommentOutput]
+  types: [String]
+}
+
+type PlaceRatingOutput {
+  id: String!
+  userId: String!
+  dateCreated: String!
+  stars: String
+}
+
+type PlaceCommentOutput {
+  id: String!
+  userId: String!
+  dateCreated: String!
+  likes: Int!
+  text: String!
+}
+
+"""
+Place to check whether duplicate
+"""
+input NewPlaceToCheck {
+  name: String!
+  address: String
+  googlePlaceId: String!
+  location: LatLngInput!
+  city: String
+  country: String
+  rating: PlaceRatingInput
+  note: String
+  price: Int
+  types: [String]
+}
+
+input LatLngInput {
+  longitude: Float
+  latitude: Float
+}
+
+"""
+Root Mutation
+"""
+type Mutation {
+  """
+  Create a new user
+  """
+  createUser(
+    email: String!
+    password: String!
+    username: String!
+    displayName: String!
+    dob: String!
+    profileLocation: String
+  ): User
+
+  """
+  Add a new follow
+  """
+  follow(userId: String!, followId: String!): User
+
+  """
+  Remove follow
+  """
+  unfollow(userId: String!, followId: String!): User
+
+  """
+  Initialise a place
+  """
+  createPlace: Place
+
+  """
+  Initialise a list
+  """
+  createList(
+    userId: String!
+    displayName: String!
+    location: LatLngInput
+    initialPlace: InitialPlace
+  ): List
+
+  """
+  Add a place to a list
+  """
+  addPlaceToList(listId: String!, userId: String!, place: PlaceToAdd): List
+
+  """
+  Alter a user
+  """
+  putUser(
+    userId: String!
+    checkInLocation: checkInLocation
+    countries: [CountryInput]
+  ): User
+
+  """
+  Add a message to a group
+  """
+  postMessage(groupId: String, userId: ID, message: String): MessageGroup
+
+  """
+  Removes a list from a user
+  """
+  deleteList(userId: String!, listId: String!): User
+
+  """
+  Start a group with a message
+  """
+  createGroup(
+    from: String!
+    to: [String]!
+    message: String
+    name: String
+  ): MessageGroup
+
+  """
+  Alter a user
+  """
+  putContact(
+    userId: String!
+    contactIds: [String]!
+    groupName: String
+    visible: Boolean
+  ): User
+
+  """
+  Create a new signup
+  """
+  postDetails(email: String, username: String, name: String): SignUp
+
+  """
+  Alter a signup
+  """
+  putDetails(
+    id: String!
+    countriesVisited: [String]
+    countriesToVisit: [String]
+  ): SignUp
+}
+
+"""
+the optional initial place on a list
+"""
+input InitialPlace {
+  name: String!
+  address: String
+  googlePlaceId: String!
+  location: LatLngInput!
+  city: String
+  country: String
+  rating: PlaceRatingInput
+  note: String
+  price: Int
+  types: [String]
+}
+
+"""
+the place to add to a list
+"""
+input PlaceToAdd {
+  name: String!
+  address: String
+  googlePlaceId: String!
+  location: LatLngInput!
+  city: String
+  country: String
+  rating: PlaceRatingInput
+  note: String
+  price: Int
+  types: [String]
+}
+
+"""
+the details of where user is checking in
+"""
+input checkInLocation {
+  location: LatLngInput
+  placeId: String
+  names: checkInLocationNames
+}
+
+input checkInLocationNames {
+  main_text: String
+  secondary_text: String
+}
+
+input CountryInput {
+  country: String
+  visited: Boolean
+}
+
+input PlaceRatingInput {
+  id: String!
+  userId: String!
+  dateCreated: String!
+  stars: Int
+}
+
+"""
+A signup
+"""
+type SignUp {
+  _id: String
+  name: String
+  email: String
+  username: String
+  countriesVisited: [String]
+  countriesToVisit: [String]
+}
+
+"""
+Root Subscription
+"""
+type Subscription {
+  """
+  New messages from the server
+  """
+  newMessages(id: String, date: String): MessageGroup
+
+  """
+  A Change to followers/following
+  """
+  followChange(id: String): FollowChange
+}
+
+type FollowChange {
+  from: User
+  to: User
+  follow: Boolean
+}

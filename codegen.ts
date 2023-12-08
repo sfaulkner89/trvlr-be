@@ -1,17 +1,16 @@
-
-import type { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:8080",
+  schema: './schema.graphql',
   generates: {
-    "src/generated/graphql.ts": {
-      plugins: ["typescript", "typescript-resolvers", "typescript-mongodb"]
+    './graphql/generated/graphql.ts': {
+      plugins: ['typescript', 'typescript-resolvers', 'typescript-mongodb']
     },
-    "./graphql.schema.json": {
-      plugins: ["introspection"]
+    './graphql.schema.json': {
+      plugins: ['introspection']
     }
   }
-};
+}
 
-export default config;
+export default config

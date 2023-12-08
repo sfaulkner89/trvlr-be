@@ -10,12 +10,11 @@ const ContactIdSchema = new Schema({
 
 export const UserSchema = new Schema(
   {
-    id: { type: String, index: true },
-    email: String,
-    password: String,
-    username: String,
-    displayName: String,
-    dob: String,
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    username: { type: String, required: true },
+    displayName: { type: String, required: true },
+    dob: { type: String, required: true },
     profileLocation: String,
     followers: Array,
     following: Array,
@@ -37,6 +36,7 @@ export const UserSchema = new Schema(
     messageGroupIds: Array<String>
   },
   {
+    timestamps: true,
     toJSON: {
       virtuals: true
     },

@@ -1,9 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
-import { MessageGQL } from '../../../types/gqlOutputTypes/Message'
 import { MessageGroup } from '../../schema/Message'
-import { Message } from '../../../types/tsTypes/Message'
 import { PubSub } from 'graphql-subscriptions'
-import { MessageGQLInput } from '../../../types/gqlInputTypes/MessageGQLInput'
 import { MessageGroupType } from '../../types/MessageGroupType'
 import { User } from '../../schema/User'
 import { v4 } from 'uuid'
@@ -50,15 +47,12 @@ export const createGroup = {
       dateCreated: new Date(),
       dateModified: new Date()
     })
-    console.log('got here 1')
     pubsub.pubsub.publish('MESSAGE_SENT', {
       newMessages: messageGroup
     })
-    console.log('got here 2')
     await User.find({ id: [from, ...to] }).updateMany({
       $push: { messagingGroups: messageGroup.id }
     })
-    console.log('got here 3')
     const populatedMessageGroup = await MessageGroup.aggregate([
       {
         $match: { id: messageGroup.id }
