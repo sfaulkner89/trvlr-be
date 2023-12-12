@@ -20,9 +20,9 @@ export default async (
     id: groupId
   })
   existingMessageGroup.messages.push({
-    to: existingMessageGroup.members.filter(
-      (member: string) => member !== userId
-    ),
+    to: existingMessageGroup.members
+      .filter((member: string) => member !== userId)
+      .map((member: string) => mongoose.Types.ObjectId(member)),
     from: userId,
     message,
     dateCreated: new Date()
