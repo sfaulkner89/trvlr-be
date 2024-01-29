@@ -16,6 +16,7 @@ export const postDetails = {
     _: undefined,
     args: { email: string; username: string; name: string }
   ) => {
+    console.log('new signup', args)
     const newSignup = new Signup({
       email: args.email,
       username: args.username.toLowerCase(),
